@@ -2,23 +2,31 @@ package net.originmobi.pdv.service;
 
 import java.sql.Timestamp;
 
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 
 import net.originmobi.pdv.model.Receber;
 import net.originmobi.pdv.repository.ReceberRepository;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @Service
 public class ReceberService {
 
-	@Autowired
-	private ReceberRepository receberRepo;
+	private static final Logger logger = LoggerFactory.getLogger(ReceberService.class);
+
+    private final ReceberRepository receberRepo;
+
+    public ReceberService(ReceberRepository receberRepo) {
+        this.receberRepo = receberRepo;
+    }
 
 	public void cadastrar(Receber receber) {
 		try {
 			receberRepo.save(receber);
 		} catch (Exception e) {
-			System.out.println(e);
+			logger.error("" + e.getMessage(), e);
 			throw new RuntimeException();
 		}
 	}
@@ -30,8 +38,8 @@ public class ReceberService {
 				valor_restante, quitado, sequencia, data_cadastro, data_vencimento, pessoa_codigo);
 	}
 	
-	public String total_a_receber() {
-		return receberRepo.total_a_receber();
-	}
+    public String totalAReceber() {
+        return receberRepo.total_a_receber();
+    }
 
 }

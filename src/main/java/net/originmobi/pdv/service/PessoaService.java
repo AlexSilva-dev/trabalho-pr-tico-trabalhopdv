@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,17 +25,19 @@ import net.originmobi.pdv.repository.PessoaRepository;
 @Service
 public class PessoaService {
 
-	@Autowired
-	private PessoaRepository pessoas;
+    private final PessoaRepository pessoas;
+    private final CidadeService cidades;
+    private final EnderecoService enderecos;
+    private final TelefoneService telefones;
 
-	@Autowired
-	private CidadeService cidades;
-
-	@Autowired
-	private EnderecoService enderecos;
-
-	@Autowired
-	private TelefoneService telefones;
+    
+    public PessoaService(PessoaRepository pessoas, CidadeService cidades,
+                         EnderecoService enderecos, TelefoneService telefones) {
+        this.pessoas = pessoas;
+        this.cidades = cidades;
+        this.enderecos = enderecos;
+        this.telefones = telefones;
+    }
 
 	private LocalDate dataAtual = LocalDate.now();
 
@@ -116,11 +118,11 @@ public class PessoaService {
 		// Vincula telefone
 		pessoa.setTelefone(fones);
 
-		try {
-			pessoas.save(pessoa);
-		} catch (Exception e) {
-			throw new RuntimeException("Erro ao tentar cadastrar pessoa, chame o suporte");
-		}
+        try {
+            pessoas.save(pessoa);
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao tentar cadastrar pessoa, verifique os dados informados");
+        }
 
 		return "Pessoa salva com sucesso";
 	}

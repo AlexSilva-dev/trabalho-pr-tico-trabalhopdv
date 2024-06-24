@@ -5,7 +5,9 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -20,11 +22,15 @@ import net.originmobi.pdv.repository.ProdutoRepository;
 @Service
 public class ProdutoService {
 
-	@Autowired
-	private ProdutoRepository produtos;
+	private static final Logger logger = LoggerFactory.getLogger(ProdutoService.class);
 
-	@Autowired
-	private VendaProdutoService vendaProdutos;
+    private final ProdutoRepository produtos;
+    private final VendaProdutoService vendaProdutos;
+
+    public ProdutoService(ProdutoRepository produtos, VendaProdutoService vendaProdutos) {
+        this.produtos = produtos;
+        this.vendaProdutos = vendaProdutos;
+    }
 
 	private LocalDate dataAtual = LocalDate.now();
 
@@ -59,7 +65,7 @@ public class ProdutoService {
 						dataValidade, controleEstoque, situacao, unitario, subtribu.ordinal(), Date.valueOf(dataAtual),
 						ncm, cest, tributacao, modbc, vendavel);
 			} catch (Exception e) {
-				System.out.println(e.getMessage());
+				logger.error("Erro ao cadastrar produto: " + e.getMessage(), e);
 				return "Erro a cadastrar produto, chame o suporte";
 			}
 		} else {
@@ -71,7 +77,7 @@ public class ProdutoService {
 
 				return "Produto atualizado com sucesso";
 			} catch (Exception e) {
-				System.out.println(e.getMessage());
+				logger.error("Erro a atualizar produto: " + e.getMessage(), e);
 				return "Erro a atualizar produto, chame o suporte";
 			}
 
@@ -104,7 +110,7 @@ public class ProdutoService {
 							"O produto de código " + codprod + " não tem estoque suficiente, verifique");
 				}
 			} else {
-				System.out.println("Produto não controla estoque");
+				logger.error("Produto não controla estoque: ");
 			}
 		}
 
