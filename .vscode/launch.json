@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-PdvApplication<pdv>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "net.originmobi.pdv.PdvApplication",
+            "projectName": "pdv",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
