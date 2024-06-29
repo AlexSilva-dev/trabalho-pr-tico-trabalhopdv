@@ -15,6 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 class CaixaLancamentoServiceTest {
@@ -91,4 +92,6 @@ class CaixaLancamentoServiceTest {
         assertTrue(lancamentosObtidos.contains(lancamento1));
         assertTrue(lancamentosObtidos.contains(lancamento2));
     }
+
 }
+
