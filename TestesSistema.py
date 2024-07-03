@@ -162,3 +162,34 @@ def test_cadastro_validade_expirada(driver):
         error_message = driver.find_element(By.XPATH, '/html/body/section[2]/div/div/div[1]/div/span').text
         time.sleep(1)
         assert error_message == "Produdo cadastrado com sucesso"
+
+def test_cadastro_valor_negativo(driver):
+    driver.get("http://localhost:8080/login")
+    time.sleep(2)
+    username_input = driver.find_element(By.ID, "user")
+    password_input = driver.find_element(By.ID, "password")
+    username_input.send_keys("gerente")
+    password_input.send_keys("123")
+    time.sleep(1)
+    login_button = driver.find_element(By.ID, "btn-login")
+    login_button.click()
+    time.sleep(2)
+    driver.get("http://localhost:8080/produto/form")
+    time.sleep(2)
+    login_button = driver.find_element(By.XPATH, '//*[@id="form_produto"]/input[2]')
+    login_button.click()
+    time.sleep(2)
+    name_input = driver.find_element(By.ID, "descricao")
+    custo_input = driver.find_element(By.ID, "valorCusto")
+    venda_input = driver.find_element(By.ID, "valorVenda")
+    data_validade_input = driver.find_element(By.ID, "validade")
+    name_input.send_keys("Teste5")
+    custo_input.send_keys("5,00")
+    venda_input.send_keys("-10,00")
+    data_validade_input.send_keys('10/10/2024')
+    time.sleep(2)
+    login_button = driver.find_element(By.XPATH, '//*[@id="form_produto"]/input[2]')
+    login_button.click()
+    error_message = driver.find_element(By.XPATH, '/html/body/section[2]/div/div/div[1]/div/span').text
+    time.sleep(2)
+    assert error_message == "Produdo cadastrado com sucesso"
